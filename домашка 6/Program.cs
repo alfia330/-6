@@ -1,56 +1,61 @@
 ﻿using System;
-public enum AccountType
-{
-    Текущий,
-    Сберегательный,
-    Кредитный
-}
 
-
-public class BankAccount
+public class Building
 {
     private int number;           
-    private decimal balance;        
-    private AccountType type;       
+    private double height;      
+    private int floors;         
+    private int flats;          
+    private int entrances;     
 
-    private static int lastNumber = 1000; 
+    private static int lastNumber = 0; 
 
-    public BankAccount(decimal balance, AccountType type)
+    public Building(double height, int floors, int flats, int entrances)
     {
         lastNumber++;
         this.number = lastNumber;
-        this.balance = balance;
-        this.type = type;
+        this.height = height;
+        this.floors = floors;
+        this.flats = flats;
+        this.entrances = entrances;
     }
 
     public int GetNumber() { return number; }
-    public decimal GetBalance() { return balance; }
-    public AccountType GetType() { return type; }
+    public double GetHeight() { return height; }
+    public int GetFloors() { return floors; }
+    public int GetFlats() { return flats; }
+    public int GetEntrances() { return entrances; }
 
-    public void SetBalance(decimal b) { balance = b; }
-    public void SetType(AccountType t) { type = t; }
+    public void SetHeight(double h) { height = h; }
+    public void SetFloors(int f) { floors = f; }
+    public void SetFlats(int f) { flats = f; }
+    public void SetEntrances(int e) { entrances = e; }
 
-    public void Deposit(decimal sum)
+    
+    public double FloorHeight()
     {
-        balance = balance + sum;
-        Console.WriteLine($"Положено {sum}. Баланс: {balance}");
+        return height / floors;
     }
 
-    public bool Withdraw(decimal sum)
+    public double FlatsPerEntrance()
     {
-        if (sum > balance)
-        {
-            Console.WriteLine("Недостаточно!");
-            return false;
-        }
-        balance = balance - sum;
-        Console.WriteLine($"Снято {sum}. Баланс: {balance}");
-        return true;
+        return (double)flats / entrances;
+    }
+
+   
+    public double FlatsPerFloor()
+    {
+        return (double)flats / floors;
     }
 
     public void Print()
     {
-        Console.WriteLine($"Счёт № {number}, баланс = {balance}, тип = {type}");
+        Console.WriteLine($"Здание № {number}");
+        Console.WriteLine($"  Высота: {height} м, этажей: {floors}");
+        Console.WriteLine($"  Квартир: {flats}, подъездов: {entrances}");
+        Console.WriteLine($"  Высота этажа: {FloorHeight():F2} м");
+        Console.WriteLine($"  Квартир в подъезде: {FlatsPerEntrance():F2}");
+        Console.WriteLine($"  Квартир на этаже: {FlatsPerFloor():F2}");
     }
 }
 
@@ -58,15 +63,13 @@ class Program
 {
     static void Main()
     {
-        BankAccount acc1 = new BankAccount(1500m, AccountType.Сберегательный);
-        acc1.Print();
+        Building b1 = new Building(30, 10, 120, 4);
+        b1.Print();
 
-        acc1.Deposit(500m);
-        acc1.Withdraw(200m);
-        acc1.Withdraw(10000m);
-        acc1.Print();
+        b1.SetFlats(140);
+        b1.Print();
 
-        BankAccount acc2 = new BankAccount(300m, AccountType.Текущий);
-        acc2.Print();
+        Building b2 = new Building(15, 5, 60, 2);
+        b2.Print();
     }
 }
